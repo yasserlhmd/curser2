@@ -20,7 +20,7 @@
 | Create root README.md with project overview | High | TBD | ✅ Completed | Include setup instructions and tech stack |
 | **Backend Setup** |
 | Initialize Node.js backend project | High | TBD | ✅ Completed | Run `npm init` in backend/ directory |
-| Install Express.js and core dependencies | High | TBD | ✅ Completed | Install express, cors, dotenv, pg |
+| Install Express.js and core dependencies | High | TBD | ✅ Completed | Install express, pg (using native CORS and env loader) |
 | Set up Express server with basic configuration | High | TBD | ✅ Completed | Create server.js with port configuration |
 | Configure environment variables (.env) | High | TBD | ✅ Completed | Set PORT, DB_HOST, DB_NAME, DB_USER, DB_PASSWORD |
 | Set up ESLint and Prettier for backend | Medium | TBD | ⏸️ Deferred | Configure code quality tools |
@@ -43,19 +43,19 @@
 | Create taskController.js with request handlers | High | TBD | ✅ Completed | Handle HTTP requests and responses |
 | Add input validation middleware | High | TBD | ✅ Completed | Validate request body and parameters |
 | Add error handling middleware | High | TBD | ✅ Completed | Centralized error handling for API |
-| Add CORS middleware configuration | High | TBD | ✅ Completed | Allow frontend to access API |
+| Add CORS middleware configuration | High | TBD | ✅ Completed | Implement native CORS middleware for frontend access |
 | **Backend API - Filtering** |
 | Implement status filtering in GET /api/tasks | High | TBD | ✅ Completed | Support ?status=pending query parameter |
 | Add query parameter validation | High | TBD | ✅ Completed | Validate status values (pending, in-progress, completed) |
 | **Frontend Setup** |
 | Initialize React app with Create React App | High | TBD | ✅ Completed | Run `npx create-react-app frontend` |
-| Install Axios for API calls | High | TBD | ✅ Completed | Install axios for HTTP requests |
+| Set up API service with native Fetch | High | TBD | ✅ Completed | Use native Fetch API for HTTP requests |
 | Install and configure Tailwind CSS | High | TBD | ⏸️ Deferred | Using custom CSS instead |
 | Set up ESLint and Prettier for frontend | Medium | TBD | ⏸️ Deferred | Configure code quality tools |
 | Configure environment variables | High | TBD | ✅ Completed | Set REACT_APP_API_URL for API endpoint |
 | **Frontend - Project Structure** |
 | Create folder structure (components, pages, services) | High | TBD | ✅ Completed | Follow blueprint folder structure |
-| Set up API service layer | High | TBD | ✅ Completed | Create services/api.js with Axios instance |
+| Set up API service layer | High | TBD | ✅ Completed | Create services/api.js with native Fetch API wrapper |
 | Create taskService.js for API calls | High | TBD | ✅ Completed | Implement API methods for tasks |
 | **Frontend - UI Components** |
 | Create common Button component | High | TBD | ✅ Completed | Reusable button with CSS styling |
@@ -175,6 +175,8 @@
 - Custom CSS works well for MVP (Tailwind can be added later if needed)
 - Docker Compose simplifies local database setup
 - API URL configuration requires careful attention to baseURL and path prefixes
+- Native APIs (Fetch, fs, custom middleware) reduce dependencies and improve performance
+- Refactoring to native libraries can reduce bundle size significantly (~13KB)
 
 ### Next Sprint Priorities
 - ⏳ Production build and testing
@@ -185,6 +187,6 @@
 
 ---
 
-**Document Version**: 2.0  
-**Last Updated**: 2025-11-12
+**Document Version**: 2.1  
+**Last Updated**: 2025-01-XX
 

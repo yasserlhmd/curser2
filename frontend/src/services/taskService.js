@@ -11,8 +11,8 @@ import api from './api';
  */
 export const getAllTasks = async (status = null) => {
   try {
-    const params = status ? { status } : {};
-    const response = await api.get('/tasks', { params });
+    const url = status ? `/tasks?status=${encodeURIComponent(status)}` : '/tasks';
+    const response = await api.get(url);
     return response.data;
   } catch (error) {
     throw error;

@@ -104,7 +104,16 @@ frontend/src/
 - `refactor/task-service`
 - `docs/api-documentation`
 
-## 5. Cursor / AI Prompts Library
+## 5. Code Optimization Principles
+
+- **Prefer Native APIs**: Use native browser/Node.js APIs when available instead of external dependencies
+  - Use `fetch` instead of `axios` for HTTP requests
+  - Use native `fs` module instead of `dotenv` for environment loading
+  - Use native middleware instead of external packages when possible
+- **Minimize Dependencies**: Only add dependencies when absolutely necessary
+- **Performance First**: Native APIs are typically faster and have better browser/runtime optimization
+
+## 6. Cursor / AI Prompts Library
 
 | Purpose | Example Prompt |
 |---------|----------------|
@@ -119,7 +128,7 @@ frontend/src/
 | **Add Error Handling** | "Add proper error handling to this async function." |
 | **Review Code** | "Review this code for security vulnerabilities and best practices." |
 
-## 6. Code Review Rules
+## 7. Code Review Rules
 
 Checklist for self or peer reviews:
 
@@ -147,6 +156,6 @@ Checklist for self or peer reviews:
 
 ---
 
-**Document Version**: 2.0  
-**Last Updated**: 2025-11-12
+**Document Version**: 2.1  
+**Last Updated**: 2025-01-XX
 

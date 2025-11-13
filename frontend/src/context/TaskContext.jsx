@@ -23,9 +23,10 @@ export const TaskProvider = ({ children }) => {
     setError(null);
     try {
       const response = await taskService.getAllTasks(status);
-      setTasks(response.data || []);
+      setTasks(response.data || response || []);
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to fetch tasks');
+      const errorMessage = err.response?.data?.error?.message || err.message || 'Failed to fetch tasks';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -37,10 +38,11 @@ export const TaskProvider = ({ children }) => {
     setError(null);
     try {
       const response = await taskService.createTask(taskData);
-      setTasks((prevTasks) => [response.data, ...prevTasks]);
-      return response.data;
+      const task = response.data || response;
+      setTasks((prevTasks) => [task, ...prevTasks]);
+      return task;
     } catch (err) {
-      const errorMessage = err.response?.data?.error?.message || 'Failed to create task';
+      const errorMessage = err.response?.data?.error?.message || err.message || 'Failed to create task';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -54,12 +56,13 @@ export const TaskProvider = ({ children }) => {
     setError(null);
     try {
       const response = await taskService.updateTask(id, taskData);
+      const task = response.data || response;
       setTasks((prevTasks) =>
-        prevTasks.map((task) => (task.id === id ? response.data : task))
+        prevTasks.map((t) => (t.id === id ? task : t))
       );
-      return response.data;
+      return task;
     } catch (err) {
-      const errorMessage = err.response?.data?.error?.message || 'Failed to update task';
+      const errorMessage = err.response?.data?.error?.message || err.message || 'Failed to update task';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -75,7 +78,7 @@ export const TaskProvider = ({ children }) => {
       await taskService.deleteTask(id);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     } catch (err) {
-      const errorMessage = err.response?.data?.error?.message || 'Failed to delete task';
+      const errorMessage = err.response?.data?.error?.message || err.message || 'Failed to delete task';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

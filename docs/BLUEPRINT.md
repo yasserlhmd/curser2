@@ -16,14 +16,14 @@ This approach provides simple development and deployment, easy debugging and tes
 | Layer | Technology | Justification |
 |-------|------------|---------------|
 | **Frontend** | React | Component-based UI for reusability and maintainability |
-| **Frontend** | Axios | HTTP client for API communication with interceptors |
+| **Frontend** | Native Fetch API | HTTP client for API communication (native browser API) |
 | **Frontend** | CSS | Custom CSS for component styling |
 | **Frontend** | React Context API | State management for MVP (scalable to Redux/Zustand) |
 | **Backend** | Node.js | JavaScript runtime for full-stack JavaScript development |
 | **Backend** | Express.js | Minimal web framework for REST API endpoints |
 | **Backend** | PostgreSQL | Relational database for ACID compliance and reliability |
 | **Backend** | pg (node-postgres) | PostgreSQL client with connection pooling |
-| **Backend** | CORS | Cross-origin resource sharing middleware |
+| **Backend** | Native CORS Middleware | Custom CORS implementation using native Express middleware |
 | **Database** | PostgreSQL | Structured data storage with indexing and transactions |
 | **Development** | Docker | Containerization for consistent local PostgreSQL setup |
 | **Development** | ESLint + Prettier | Code quality and formatting standards |
@@ -68,7 +68,7 @@ graph TD
 
 ### Request Flow (Create Task)
 1. **User Action**: User submits task form in React frontend
-2. **Frontend Processing**: React component calls API service (Axios)
+2. **Frontend Processing**: React component calls API service (Native Fetch API)
 3. **HTTP Request**: POST request sent to `/api/tasks` endpoint
 4. **Backend Routing**: Express routes request to task controller
 5. **Validation**: Middleware validates request body (title required)
@@ -115,11 +115,11 @@ task-manager/
 │
 ├── backend/
 │   ├── src/
-│   │   ├── config/              # database.js
+│   │   ├── config/              # database.js, env.js
 │   │   ├── controllers/         # taskController.js
 │   │   ├── services/            # taskService.js
 │   │   ├── routes/              # taskRoutes.js
-│   │   ├── middleware/          # (empty, for future use)
+│   │   ├── middleware/          # cors.js (native CORS middleware)
 │   │   ├── app.js
 │   │   └── server.js
 │   ├── migrations/              # (empty, for future use)
@@ -179,6 +179,6 @@ task-manager/
 
 ---
 
-**Document Version**: 2.0  
-**Last Updated**: 2025-11-12
+**Document Version**: 3.0  
+**Last Updated**: 2025-01-XX
 

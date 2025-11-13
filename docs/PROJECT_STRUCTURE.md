@@ -60,7 +60,7 @@ task-manager/
 - `src/App.js` - Main application component
 - `src/pages/HomePage.jsx` - Main page with all components
 - `src/components/` - Reusable UI components
-- `src/services/api.js` - Axios instance configuration
+- `src/services/api.js` - Native Fetch API wrapper
 - `src/services/taskService.js` - Task API methods
 - `src/context/TaskContext.jsx` - Global state management
 
@@ -71,6 +71,8 @@ task-manager/
 - `src/controllers/taskController.js` - Request handlers
 - `src/services/taskService.js` - Business logic
 - `src/config/database.js` - Database connection
+- `src/config/env.js` - Native environment variable loader
+- `src/middleware/cors.js` - Native CORS middleware
 
 ### Database
 - `schema.sql` - Database schema with tasks table
@@ -128,8 +130,8 @@ REACT_APP_ENV=development
 
 ## Technology Stack
 
-- **Frontend**: React, Axios, React Context API
-- **Backend**: Node.js, Express.js, PostgreSQL (pg)
+- **Frontend**: React, Native Fetch API, React Context API
+- **Backend**: Node.js, Express.js, PostgreSQL (pg), Native CORS middleware, Native env loader
 - **Database**: PostgreSQL (Docker for local development)
 - **Deployment**: Vercel/Netlify (frontend), Railway/Render (backend)
 

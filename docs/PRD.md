@@ -135,6 +135,7 @@
 ### Dependencies
 - **External APIs**: None (self-contained application)
 - **Libraries**: React, Express.js, PostgreSQL client (pg)
+- **Native APIs**: Native Fetch API (frontend), Native Node.js fs module (env loading), Native CORS middleware
 - **Hosting Services**: Vercel/Netlify (frontend), Railway/Render (backend)
 - **Database**: Managed PostgreSQL service
 - **Development Tools**: Docker for local PostgreSQL development
@@ -151,6 +152,6 @@
 
 ---
 
-**Document Version**: 3.0  
-**Last Updated**: 2025-11-12
+**Document Version**: 3.1  
+**Last Updated**: 2025-01-XX
 

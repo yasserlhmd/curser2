@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('./config/env'); // Load environment variables
 const app = require('./app');
 const { testConnection } = require('./config/database');
 

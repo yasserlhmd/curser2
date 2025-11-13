@@ -1,0 +1,25 @@
+.task-list {
+  margin-top: 24px;
+}
+
+.task-list-loading,
+.task-list-error,
+.task-list-empty {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-list-loading p,
+.task-list-empty p {
+  color: #666;
+  font-size: 16px;
+}
+
+.task-list-error p {
+  color: #dc3545;
+  font-size: 16px;
+}
+

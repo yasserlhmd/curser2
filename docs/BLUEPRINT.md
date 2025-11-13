@@ -1,0 +1,184 @@
+# Architecture Blueprint
+
+## 1. System Overview
+
+The Task Manager application follows a **monolithic architecture** with clear separation between frontend and backend layers. The architecture emphasizes simplicity, modularity, and scalability:
+
+- **Frontend**: React SPA (Single Page Application) deployed separately
+- **Backend**: Node.js/Express REST API with stateless design
+- **Database**: PostgreSQL for data persistence
+- **Deployment**: Decoupled monolith (separate frontend/backend deployments)
+
+This approach provides simple development and deployment, easy debugging and testing, clear separation of concerns, horizontal scalability, and a future migration path to microservices if needed.
+
+## 2. Tech Stack
+
+| Layer | Technology | Justification |
+|-------|------------|---------------|
+| **Frontend** | React | Component-based UI for reusability and maintainability |
+| **Frontend** | Axios | HTTP client for API communication with interceptors |
+| **Frontend** | CSS | Custom CSS for component styling |
+| **Frontend** | React Context API | State management for MVP (scalable to Redux/Zustand) |
+| **Backend** | Node.js | JavaScript runtime for full-stack JavaScript development |
+| **Backend** | Express.js | Minimal web framework for REST API endpoints |
+| **Backend** | PostgreSQL | Relational database for ACID compliance and reliability |
+| **Backend** | pg (node-postgres) | PostgreSQL client with connection pooling |
+| **Backend** | CORS | Cross-origin resource sharing middleware |
+| **Database** | PostgreSQL | Structured data storage with indexing and transactions |
+| **Development** | Docker | Containerization for consistent local PostgreSQL setup |
+| **Development** | ESLint + Prettier | Code quality and formatting standards |
+| **Deployment** | Vercel/Netlify | Frontend hosting with CDN and automatic deployments |
+| **Deployment** | Railway/Render | Backend hosting with managed infrastructure |
+
+## 3. System Diagram
+
+```mermaid
+graph TD
+    A[Frontend - React SPA] --> B[Backend API - Express]
+    B --> C[PostgreSQL Database]
+    
+    subgraph "Frontend Layer"
+        A
+        A1[UI Components]
+        A2[API Services]
+        A3[State Management]
+        A --> A1
+        A1 --> A2
+        A2 --> A3
+    end
+    
+    subgraph "Backend Layer"
+        B
+        B1[API Routes]
+        B2[Controllers]
+        B3[Business Services]
+        B --> B1
+        B1 --> B2
+        B2 --> B3
+    end
+    
+    subgraph "Data Layer"
+        C
+        C1[Connection Pool]
+        C --> C1
+    end
+```
+
+## 4. Data Flow
+
+### Request Flow (Create Task)
+1. **User Action**: User submits task form in React frontend
+2. **Frontend Processing**: React component calls API service (Axios)
+3. **HTTP Request**: POST request sent to `/api/tasks` endpoint
+4. **Backend Routing**: Express routes request to task controller
+5. **Validation**: Middleware validates request body (title required)
+6. **Business Logic**: Controller calls task service for business logic
+7. **Database Operation**: Service executes INSERT query via connection pool
+8. **Response**: Database returns created task with ID
+9. **API Response**: Controller sends JSON response (201 Created)
+10. **Frontend Update**: React updates state with new task
+11. **UI Refresh**: Task list re-renders with new task
+
+### Query Flow (Filter Tasks)
+1. **User Action**: User clicks filter button (e.g., "Completed")
+2. **Frontend Processing**: React updates filter state
+3. **HTTP Request**: GET request sent to `/api/tasks?status=completed`
+4. **Backend Processing**: Express routes to task controller
+5. **Database Query**: Service executes SELECT with WHERE clause
+6. **Response**: Database returns filtered task array
+7. **API Response**: Controller sends JSON response (200 OK)
+8. **Frontend Update**: React updates state with filtered tasks
+9. **UI Refresh**: Task list displays only completed tasks
+
+### Error Flow
+1. **Error Occurs**: Database connection failure or validation error
+2. **Error Handling**: Middleware catches error
+3. **Error Response**: Controller sends error JSON (400/500 status)
+4. **Frontend Handling**: React catches error and displays error message
+5. **User Feedback**: User sees error notification
+
+---
+
+## 5. Folder Structure
+
+```
+task-manager/
+├── frontend/
+│   ├── src/
+│   │   ├── components/          # Button, Input, TaskList, TaskItem, TaskForm, TaskFilter
+│   │   ├── services/            # api.js, taskService.js
+│   │   ├── context/             # TaskContext.jsx
+│   │   ├── pages/               # HomePage.jsx
+│   │   ├── App.js
+│   │   └── index.js
+│   └── package.json
+│
+├── backend/
+│   ├── src/
+│   │   ├── config/              # database.js
+│   │   ├── controllers/         # taskController.js
+│   │   ├── services/            # taskService.js
+│   │   ├── routes/              # taskRoutes.js
+│   │   ├── middleware/          # (empty, for future use)
+│   │   ├── app.js
+│   │   └── server.js
+│   ├── migrations/              # (empty, for future use)
+│   └── package.json
+│
+├── database/
+│   ├── schema.sql
+│   ├── docker-compose.yml
+│   ├── setup.sh
+│   ├── setup.ps1
+│   └── README.md
+│
+└── docs/                        # Documentation
+```
+
+## 6. Integration Points
+
+### API Endpoints
+
+| Method | Endpoint | Description | Protocol |
+|--------|----------|-------------|----------|
+| GET | `/api/tasks` | Get all tasks | HTTP/REST |
+| GET | `/api/tasks?status=pending` | Filter tasks by status | HTTP/REST |
+| GET | `/api/tasks/:id` | Get task by ID | HTTP/REST |
+| POST | `/api/tasks` | Create new task | HTTP/REST |
+| PUT | `/api/tasks/:id` | Update task | HTTP/REST |
+| DELETE | `/api/tasks/:id` | Delete task | HTTP/REST |
+
+### Communication Protocols
+- **Frontend ↔ Backend**: HTTP/REST (JSON)
+- **Backend ↔ Database**: PostgreSQL protocol (via pg client)
+
+
+### Response Format
+- **Success**: `{ success: true, data: {...}, message: "..." }`
+- **Error**: `{ success: false, error: { code: "...", message: "..." } }`
+
+## 7. Security & Performance Notes
+
+### Security Considerations
+
+#### MVP Security
+- **Input Validation**: Validate all user inputs on both frontend and backend
+- **SQL Injection Prevention**: Use parameterized queries (pg library)
+- **CORS Configuration**: Restrict allowed origins to frontend URL
+- **Environment Variables**: Store sensitive data in environment variables
+- **Error Handling**: Don't expose sensitive information in error messages
+
+
+### Performance Optimization
+
+#### Performance Optimization (MVP)
+- **Database Indexing**: Index `status` and `created_at` columns
+- **Connection Pooling**: Reuse database connections
+- **React.memo**: Memoize components to prevent unnecessary re-renders
+- **Query Optimization**: Optimize SQL queries
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: 2025-11-12
+

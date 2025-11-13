@@ -1,0 +1,36 @@
+.home-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.page-content {
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+}
+

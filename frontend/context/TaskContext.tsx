@@ -35,11 +35,19 @@ export const useTasks = () => {
   return context;
 };
 
-export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
+export const TaskProvider = ({
+  children,
+  initialTasks,
+  currentUser: initialUser,
+}: {
+  children: React.ReactNode;
+  initialTasks?: any[];
+  currentUser?: any | null;
+}) => {
   const { user: currentUser, isAuthenticated } = useAuth();
 
-  // State management
-  const [tasks, setTasks] = useState<any[]>([]);
+  // State management - use initialTasks if provided (from Server Component)
+  const [tasks, setTasks] = useState<any[]>(initialTasks || []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'pending', 'in-progress', 'completed'

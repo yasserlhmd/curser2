@@ -6,28 +6,30 @@
  */
 
 // ==================== Configuration ====================
-// Get base URL from environment (Next.js uses NEXT_PUBLIC_ prefix)
+// Use Next.js API routes as proxy (client-side)
 const getBaseURL = () => {
   if (typeof window !== 'undefined') {
-    // Client-side: use environment variable or default
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    // Client-side: use Next.js API routes (relative path)
+    return '/api';
   }
   // Server-side: use environment variable or default
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 };
 
 let baseURL = getBaseURL();
-// Ensure baseURL includes /api
-if (baseURL && !baseURL.endsWith('/api')) {
-  baseURL = baseURL.endsWith('/') ? `${baseURL}api` : `${baseURL}/api`;
-}
 
 /**
- * Get auth token from localStorage (client-side only)
+ * Get auth token from cookies (client-side)
+ * Note: HTTP-only cookies are automatically sent by the browser
+ * This is kept for backward compatibility during migration
  */
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('accessToken');
+  // Try localStorage first (for backward compatibility)
+  const token = localStorage.getItem('accessToken');
+  if (token) return token;
+  // Cookies are automatically sent, so we don't need to read them here
+  return null;
 };
 
 /**

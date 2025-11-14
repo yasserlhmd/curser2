@@ -9,7 +9,9 @@ import {
   Query,
   UseGuards,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -25,6 +27,7 @@ import { User } from '../database/entities/user.entity';
 /**
  * Tasks Controller
  * Handles task-related HTTP requests
+ * Includes caching for GET endpoints
  */
 @ApiTags('Tasks')
 @Controller('tasks')
@@ -34,6 +37,8 @@ export class TasksController {
   @Public()
   @Get()
   @UseGuards(OptionalJwtGuard)
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30) // Cache for 30 seconds
   @ApiOperation({ summary: 'Get all tasks (with optional filters)' })
   @ApiResponse({ status: 200, description: 'List of tasks', type: [TaskResponseDto] })
   async findAll(
@@ -48,6 +53,8 @@ export class TasksController {
   @Public()
   @Get(':id')
   @UseGuards(OptionalJwtGuard)
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60) // Cache for 60 seconds
   @ApiOperation({ summary: 'Get task by ID' })
   @ApiResponse({ status: 200, description: 'Task details', type: TaskResponseDto })
   @ApiResponse({ status: 404, description: 'Task not found' })
@@ -106,4 +113,3 @@ export class TasksController {
     };
   }
 }
-

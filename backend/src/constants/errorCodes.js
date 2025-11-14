@@ -1,0 +1,41 @@
+/**
+ * Error codes for consistent error handling across the application
+ * These codes help frontend applications handle errors appropriately
+ */
+
+const ERROR_CODES = {
+  // Authentication errors
+  NO_TOKEN: 'NO_TOKEN',
+  INVALID_TOKEN: 'INVALID_TOKEN',
+  TOKEN_REVOKED: 'TOKEN_REVOKED',
+  AUTH_REQUIRED: 'AUTH_REQUIRED',
+  AUTH_ERROR: 'AUTH_ERROR',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+  
+  // Validation errors
+  MISSING_FIELDS: 'MISSING_FIELDS',
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  INVALID_EMAIL: 'INVALID_EMAIL',
+  INVALID_PASSWORD: 'INVALID_PASSWORD',
+  
+  // Resource errors
+  USER_EXISTS: 'USER_EXISTS',
+  RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
+  RESOURCE_CONFLICT: 'RESOURCE_CONFLICT',
+  
+  // Server errors
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+  DATABASE_ERROR: 'DATABASE_ERROR',
+  NETWORK_ERROR: 'NETWORK_ERROR',
+  
+  // Task-specific errors
+  TASK_NOT_FOUND: 'TASK_NOT_FOUND',
+  INVALID_STATUS: 'INVALID_STATUS',
+  UNAUTHORIZED_ACCESS: 'UNAUTHORIZED_ACCESS',
+};
+
+module.exports = {
+  ERROR_CODES,
+};
+

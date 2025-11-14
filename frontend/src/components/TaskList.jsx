@@ -1,3 +1,8 @@
+/**
+ * TaskList Component
+ * Displays a list of tasks with loading and error states
+ * Renders TaskItem components for each task
+ */
 import React from 'react';
 import { useTasks } from '../context/TaskContext';
 import TaskItem from './TaskItem';

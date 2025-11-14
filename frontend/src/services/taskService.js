@@ -1,19 +1,34 @@
+/**
+ * Task Service
+ * API client for task-related operations
+ * Handles all HTTP requests to the task endpoints
+ */
 import api from './api';
 
 /**
- * Task Service - API calls for tasks
+ * Get all tasks with optional filters
+ * @param {string|null} status - Status filter (pending, in-progress, completed)
+ * @param {string|number|null} userId - User filter ('all', 'me', or user ID)
+ * @returns {Promise<Array>} Array of task objects
+ * @throws {Error} If API request fails
  */
-
-/**
- * Get all tasks (with optional status filter)
- * @param {string} status - Optional status filter (pending, in-progress, completed)
- * @returns {Promise} Promise with tasks array
- */
-export const getAllTasks = async (status = null) => {
+export const getAllTasks = async (status = null, userId = null) => {
   try {
-    const url = status ? `/tasks?status=${encodeURIComponent(status)}` : '/tasks';
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    // Always send user_id parameter if provided (including 'all' or 'me')
+    if (userId !== null && userId !== undefined) {
+      params.append('user_id', String(userId));
+    }
+    
+    const url = params.toString() ? `/tasks?${params.toString()}` : '/tasks';
     const response = await api.get(url);
-    return response.data;
+    
+    // Backend returns: { success: true, data: tasks, count: ... }
+    // API wrapper returns: { data: { success: true, data: tasks, count: ... } }
+    const tasks = response.data.data || response.data || [];
+    
+    return tasks;
   } catch (error) {
     throw error;
   }
@@ -27,7 +42,9 @@ export const getAllTasks = async (status = null) => {
 export const getTaskById = async (id) => {
   try {
     const response = await api.get(`/tasks/${id}`);
-    return response.data;
+    // Backend returns: { success: true, data: task }
+    // API wrapper returns: { data: { success: true, data: task } }
+    return response.data.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -35,13 +52,16 @@ export const getTaskById = async (id) => {
 
 /**
  * Create new task
- * @param {Object} taskData - Task data (title, description, status)
- * @returns {Promise} Promise with created task
+ * @param {Object} taskData - Task data { title, description?, status? }
+ * @returns {Promise<Object>} Created task object
+ * @throws {Error} If API request fails
  */
 export const createTask = async (taskData) => {
   try {
     const response = await api.post('/tasks', taskData);
-    return response.data;
+    // Backend returns: { success: true, data: task, message: "..." }
+    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
+    return response.data.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -56,7 +76,9 @@ export const createTask = async (taskData) => {
 export const updateTask = async (id, taskData) => {
   try {
     const response = await api.put(`/tasks/${id}`, taskData);
-    return response.data;
+    // Backend returns: { success: true, data: task, message: "..." }
+    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
+    return response.data.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -70,7 +92,9 @@ export const updateTask = async (id, taskData) => {
 export const deleteTask = async (id) => {
   try {
     const response = await api.delete(`/tasks/${id}`);
-    return response.data;
+    // Backend returns: { success: true, data: task, message: "..." }
+    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
+    return response.data.data || response.data;
   } catch (error) {
     throw error;
   }

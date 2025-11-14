@@ -183,3 +183,19 @@ backend/uploads/
 
 # Docker
 docker-compose.override.yml
+
+# Project specific
+*.md.bak
+REFACTORING_SUMMARY.md
+IMPLEMENTATION_SUMMARY.md.bak
+
+# Redis dump files
+dump.rdb
+
+# PostgreSQL data (if running locally)
+postgres_data/
+
+# Test files
+*.test.js
+*.spec.js
+test-*.js

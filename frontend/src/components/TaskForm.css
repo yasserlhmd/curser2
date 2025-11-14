@@ -26,6 +26,53 @@
   margin-top: 20px;
 }
 
+.task-form-guest {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px dashed #dee2e6;
+}
+
+.guest-message {
+  text-align: center;
+  padding: 24px;
+}
+
+.guest-message p {
+  margin: 0 0 16px 0;
+  color: #6c757d;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.guest-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.guest-actions span {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.guest-link {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.guest-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
 .form-actions .btn {
   flex: 1;
 }

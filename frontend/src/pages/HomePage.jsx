@@ -1,3 +1,8 @@
+/**
+ * HomePage Component
+ * Main page displaying task management interface
+ * Public access - guests can view tasks, authenticated users can manage their own
+ */
 import React from 'react';
 import { TaskProvider } from '../context/TaskContext';
 import TaskFilter from '../components/TaskFilter';
@@ -10,8 +15,10 @@ const HomePage = () => {
     <TaskProvider>
       <div className="home-page">
         <header className="page-header">
-          <h1>Task Manager</h1>
-          <p>Organize and track your tasks efficiently</p>
+          <div className="header-content">
+            <h1>Task Manager</h1>
+            <p>Organize and track your tasks efficiently</p>
+          </div>
         </header>
 
         <div className="page-content">

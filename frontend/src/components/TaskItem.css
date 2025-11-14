@@ -65,16 +65,71 @@
 
 .task-meta {
   display: flex;
-  gap: 16px;
-  margin-top: 12px;
-  padding-top: 12px;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
   border-top: 1px solid #eee;
+}
+
+.task-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 6px;
+  border-left: 3px solid #007bff;
+}
+
+.user-label {
   font-size: 12px;
-  color: #999;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  padding: 2px 8px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.task-dates {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .task-date {
   font-size: 12px;
-  color: #999;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+}
+
+.task-date::before {
+  content: '📅';
+  margin-right: 4px;
+  font-size: 10px;
+}
+
+.task-readonly-notice {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fff3cd;
+  border-left: 3px solid #ffc107;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #856404;
+}
+
+.task-readonly-notice p {
+  margin: 0;
 }
 

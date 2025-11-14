@@ -24,11 +24,13 @@ export const getAllTasks = async (status = null, userId = null) => {
     const url = params.toString() ? `/tasks?${params.toString()}` : '/tasks';
     const response = await api.get(url);
     
-    // Backend returns: { success: true, data: tasks, count: ... }
-    // API wrapper returns: { data: { success: true, data: tasks, count: ... } }
-    const tasks = response.data.data || response.data || [];
+    // Backend returns: { success: true, data: tasks }
+    // API wrapper returns: { data: { success: true, data: tasks } }
+    // Extract tasks array from nested structure
+    const tasks = response.data?.data || response.data || [];
     
-    return tasks;
+    // Ensure we return an array
+    return Array.isArray(tasks) ? tasks : [];
   } catch (error) {
     throw error;
   }
@@ -44,7 +46,7 @@ export const getTaskById = async (id) => {
     const response = await api.get(`/tasks/${id}`);
     // Backend returns: { success: true, data: task }
     // API wrapper returns: { data: { success: true, data: task } }
-    return response.data.data || response.data;
+    return response.data?.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -59,9 +61,9 @@ export const getTaskById = async (id) => {
 export const createTask = async (taskData) => {
   try {
     const response = await api.post('/tasks', taskData);
-    // Backend returns: { success: true, data: task, message: "..." }
-    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
-    return response.data.data || response.data;
+    // Backend returns: { success: true, data: task }
+    // API wrapper returns: { data: { success: true, data: task } }
+    return response.data?.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -76,9 +78,9 @@ export const createTask = async (taskData) => {
 export const updateTask = async (id, taskData) => {
   try {
     const response = await api.put(`/tasks/${id}`, taskData);
-    // Backend returns: { success: true, data: task, message: "..." }
-    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
-    return response.data.data || response.data;
+    // Backend returns: { success: true, data: task }
+    // API wrapper returns: { data: { success: true, data: task } }
+    return response.data?.data || response.data;
   } catch (error) {
     throw error;
   }
@@ -92,9 +94,10 @@ export const updateTask = async (id, taskData) => {
 export const deleteTask = async (id) => {
   try {
     const response = await api.delete(`/tasks/${id}`);
-    // Backend returns: { success: true, data: task, message: "..." }
-    // API wrapper returns: { data: { success: true, data: task, message: "..." } }
-    return response.data.data || response.data;
+    // Backend returns: { success: true, data: { message: "..." } }
+    // API wrapper returns: { data: { success: true, data: { message: "..." } } }
+    // Delete doesn't return task data, just success message
+    return response.data?.data || response.data;
   } catch (error) {
     throw error;
   }

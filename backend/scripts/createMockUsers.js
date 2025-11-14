@@ -1,8 +1,9 @@
 /**
  * Script to create mock users for testing
+ * Updated for NestJS - uses bcrypt instead of PBKDF2
  * Run with: node scripts/createMockUsers.js
  */
-const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
@@ -31,32 +32,13 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || 'postgres',
 });
 
-const PASSWORD_MIN_LENGTH = 8;
-const PBKDF2_ITERATIONS = 100000;
-const SALT_LENGTH = 32;
-const HASH_LENGTH = 64;
+const SALT_ROUNDS = parseInt(process.env.PASSWORD_SALT_ROUNDS || '10', 10);
 
-function generateSalt() {
-  return crypto.randomBytes(SALT_LENGTH).toString('hex');
-}
-
-function hashPassword(password, salt) {
-  return new Promise((resolve, reject) => {
-    crypto.pbkdf2(
-      password,
-      salt,
-      PBKDF2_ITERATIONS,
-      HASH_LENGTH,
-      'sha512',
-      (err, derivedKey) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(derivedKey.toString('hex'));
-        }
-      }
-    );
-  });
+/**
+ * Hash password using bcrypt (matches NestJS implementation)
+ */
+async function hashPassword(password) {
+  return await bcrypt.hash(password, SALT_ROUNDS);
 }
 
 const mockUsers = [
@@ -69,7 +51,7 @@ const mockUsers = [
 
 async function createMockUsers() {
   try {
-    console.log('Creating mock users...\n');
+    console.log('Creating mock users (using bcrypt for NestJS)...\n');
 
     for (const user of mockUsers) {
       // Check if user already exists
@@ -79,20 +61,21 @@ async function createMockUsers() {
       );
 
       if (existing.rows.length > 0) {
-        console.log(`User ${user.email} already exists, skipping...`);
-        continue;
+        console.log(`User ${user.email} already exists, deleting and recreating with bcrypt...`);
+        // Delete existing user to recreate with bcrypt
+        await pool.query('DELETE FROM users WHERE email = $1', [user.email.toLowerCase()]);
       }
 
-      // Generate salt and hash password
-      const salt = generateSalt();
-      const passwordHash = await hashPassword(user.password, salt);
+      // Hash password using bcrypt (bcrypt includes salt in hash)
+      const passwordHash = await hashPassword(user.password);
+      const passwordSalt = ''; // bcrypt includes salt in hash, so we store empty string
 
       // Insert user
       const result = await pool.query(
         `INSERT INTO users (email, password_hash, password_salt, name, token_version)
          VALUES ($1, $2, $3, $4, 1)
          RETURNING id, email, name`,
-        [user.email.toLowerCase(), passwordHash, salt, user.name]
+        [user.email.toLowerCase(), passwordHash, passwordSalt, user.name]
       );
 
       console.log(`✅ Created user: ${result.rows[0].email} (${result.rows[0].name})`);

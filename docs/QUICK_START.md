@@ -1,50 +1,58 @@
-# Quick Start Guide - Optimized Application
+# Quick Start Guide
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- PostgreSQL
-- Redis
-- npm or yarn
+- **Node.js** 18+ (LTS recommended)
+- **PostgreSQL** 14+ (via Docker or local installation)
+- **Redis** 6+ (via Docker or local installation)
+- **npm** or **yarn**
+- **Docker** (for local database and Redis)
 
 ### Installation
 
-1. **Install Backend Dependencies**:
+1. **Clone the repository**:
+```bash
+git clone <repository-url>
+cd task-manager
+```
+
+2. **Install Backend Dependencies**:
 ```bash
 cd backend
 npm install
 ```
 
-2. **Install Frontend Dependencies**:
+3. **Install Frontend Dependencies**:
 ```bash
 cd frontend
 npm install
 ```
 
-3. **Install Shared Types** (if using as package):
-```bash
-cd shared
-npm install
-```
-
 ### Environment Setup
 
-1. **Backend (.env)**:
+1. **Backend Environment** (`backend/.env`):
+```bash
+cd backend
+cp env.example .env
+# Edit .env with your configuration
+```
+
+Required variables:
 ```env
 # Database
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
-DB_PASSWORD=your_password
-DB_NAME=task_manager
+DB_PASSWORD=postgres
+DB_NAME=taskmanager_dev
 
 # Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
 
 # JWT
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_secure_secret_key_here
 JWT_ACCESS_EXPIRATION=1h
 JWT_REFRESH_EXPIRATION=7d
 
@@ -54,14 +62,15 @@ NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000
 ```
 
-2. **Frontend (.env.local)**:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+2. **Frontend Environment** (`frontend/.env.local`):
+```bash
+cd frontend
+echo "NEXT_PUBLIC_API_URL=http://localhost:3000" > .env.local
 ```
 
 ### Running the Application
 
-1. **Start Database & Redis**:
+1. **Start Database & Redis** (Docker):
 ```bash
 cd database
 docker-compose up -d
@@ -72,18 +81,20 @@ docker-compose up -d
 cd backend
 npm run start:dev
 ```
+Backend will be available at `http://localhost:5000`
 
-3. **Start Frontend**:
+3. **Start Frontend** (in a new terminal):
 ```bash
 cd frontend
 npm run dev
 ```
+Frontend will be available at `http://localhost:3000`
 
 ### Access Points
 
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:5000/api
-- **Swagger Docs**: http://localhost:5000/api/docs
+- **Swagger Docs**: http://localhost:5000/api/docs (development only)
 - **Next.js API Routes**: http://localhost:3000/api/*
 
 ---

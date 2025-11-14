@@ -2,136 +2,240 @@
 
 ## Overview
 
-Task Manager Web App - Full-stack MVP application with React frontend and Node.js backend.
+Task Manager - Modern full-stack application with **Next.js** frontend and **NestJS** backend, featuring type-safe architecture and optimized performance.
 
 ## Directory Structure
 
 ```
 task-manager/
-├── frontend/              # React Frontend Application
-│   ├── public/            # Static assets
+├── frontend/                  # Next.js Frontend Application
+│   ├── app/                   # Next.js App Router
+│   │   ├── layout.tsx         # Root layout with metadata
+│   │   ├── providers.tsx      # Client providers wrapper
+│   │   ├── page.tsx           # Home page (Server Component)
+│   │   ├── login/             # Login page
+│   │   ├── register/          # Register page
+│   │   ├── api/               # Next.js API routes (proxy)
+│   │   │   ├── auth/          # Auth endpoints
+│   │   │   └── tasks/          # Task endpoints
+│   │   └── actions/            # Server Actions
+│   │       ├── auth.ts         # Auth mutations
+│   │       └── tasks.ts        # Task mutations
+│   ├── components/            # React components
+│   │   ├── ui/                # Base UI (Button, Input)
+│   │   ├── features/          # Feature components
+│   │   │   ├── TaskForm.tsx
+│   │   │   ├── TaskList.tsx
+│   │   │   ├── TaskItem.tsx
+│   │   │   └── TaskFilter.tsx
+│   │   └── layout/            # Layout components
+│   │       └── Navbar.tsx
+│   ├── context/               # React Context providers
+│   │   ├── AuthContext.tsx
+│   │   └── TaskContext.tsx
+│   ├── lib/                   # Utilities and services
+│   │   ├── api/               # API clients
+│   │   │   ├── client.ts      # Client-side API (uses /api routes)
+│   │   │   ├── server.ts      # Server-side API (for Server Components)
+│   │   │   ├── authService.ts
+│   │   │   └── taskService.ts
+│   │   ├── constants/
+│   │   └── utils/
+│   ├── styles/                # Global styles
+│   │   └── globals.css
+│   ├── middleware.ts          # Next.js middleware
+│   ├── next.config.js
+│   ├── tsconfig.json
+│   └── package.json
+│
+├── backend/                    # NestJS Backend API
 │   ├── src/
-│   │   ├── components/    # React components (Button, Input, TaskList, TaskItem, TaskForm, TaskFilter)
-│   │   ├── context/       # React Context (TaskContext)
-│   │   ├── pages/         # Page components (HomePage)
-│   │   ├── services/      # API service layer (api.js, taskService.js)
-│   │   ├── App.js         # Main App component
-│   │   └── index.js       # Entry point
+│   │   ├── main.ts            # Application entry point
+│   │   ├── app.module.ts      # Root module
+│   │   ├── app.controller.ts # Health check
+│   │   ├── app.service.ts
+│   │   ├── auth/              # Authentication module
+│   │   │   ├── auth.module.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── strategies/
+│   │   │   │   └── jwt.strategy.ts
+│   │   │   └── dto/           # Register, Login, AuthResponse DTOs
+│   │   ├── users/              # Users module
+│   │   │   ├── users.module.ts
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   └── dto/
+│   │   ├── tasks/              # Tasks module
+│   │   │   ├── tasks.module.ts
+│   │   │   ├── tasks.controller.ts
+│   │   │   ├── tasks.service.ts
+│   │   │   └── dto/           # Create, Update, Query, Response DTOs
+│   │   ├── database/           # Database module
+│   │   │   ├── database.module.ts
+│   │   │   ├── database.service.ts
+│   │   │   └── entities/     # User, Task entities
+│   │   ├── redis/              # Redis module
+│   │   │   ├── redis.module.ts
+│   │   │   └── redis.service.ts
+│   │   ├── token-revocation/   # Token revocation module
+│   │   ├── common/             # Shared utilities
+│   │   │   ├── decorators/    # @Public, @CurrentUser
+│   │   │   ├── guards/        # JwtAuthGuard, OptionalJwtGuard
+│   │   │   ├── interceptors/  # TransformInterceptor, CacheInterceptor
+│   │   │   ├── filters/       # HttpExceptionFilter
+│   │   │   └── interfaces/
+│   │   └── config/            # Configuration
+│   │       ├── config.module.ts
+│   │       └── config.service.ts
+│   ├── env.example            # Environment variables template
 │   ├── package.json
+│   ├── tsconfig.json
+│   └── nest-cli.json
+│
+├── shared/                     # Shared TypeScript Types
+│   ├── types/
+│   │   ├── auth.types.ts     # Authentication types
+│   │   ├── task.types.ts     # Task types
+│   │   ├── api.types.ts      # API response types
+│   │   └── index.ts          # Exports
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── database/                   # Database Setup
+│   ├── schema.sql             # Database schema
+│   ├── docker-compose.yml     # Docker PostgreSQL + Redis setup
+│   ├── migrations/            # Database migrations
+│   ├── setup.sh              # Setup script (Git Bash)
+│   ├── setup.ps1             # Setup script (PowerShell)
 │   └── README.md
 │
-├── backend/                # Node.js Backend API
-│   ├── src/
-│   │   ├── config/        # Configuration (database.js)
-│   │   ├── controllers/   # Request handlers (taskController.js)
-│   │   ├── services/      # Business logic (taskService.js)
-│   │   ├── routes/        # API routes (taskRoutes.js)
-│   │   ├── middleware/    # Custom middleware
-│   │   ├── app.js         # Express app setup
-│   │   └── server.js      # Server entry point
-│   ├── migrations/        # Database migrations
-│   ├── env.example       # Environment variables template
-│   ├── package.json
-│   └── .gitignore
+├── docs/                       # Project Documentation
+│   ├── README.md              # Documentation index
+│   ├── QUICK_START.md         # Quick start guide
+│   ├── ARCHITECTURE.md        # Detailed architecture
+│   ├── MIGRATION_HISTORY.md   # Migration details
+│   ├── IMPLEMENTATION_COMPLETE.md
+│   └── ...                    # Other documentation
 │
-├── database/               # Database Setup
-│   ├── schema.sql         # Database schema
-│   ├── docker-compose.yml # Docker PostgreSQL setup
-│   ├── setup.sh          # Setup script (Git Bash)
-│   ├── setup.ps1         # Setup script (PowerShell)
-│   └── README.md
-│
-├── docs/                   # Project Documentation
-│   ├── PRD.md             # Product Requirements Document
-│   ├── ROADMAP.md         # Product Roadmap
-│   ├── BLUEPRINT.md       # Architecture Blueprint
-│   ├── SPRINT.md          # Sprint Plan
-│   ├── GUIDELINES.md      # Coding Guidelines
-│   ├── TEST.md            # Test Strategy
-│   ├── MANIFEST.md        # Deployment Manifest
-│   └── DEVLOG.md          # Development Log
-│
-└── README.md               # Project README
+└── README.md                   # Project README
 ```
 
 ## Key Files
 
-### Frontend
-- `src/App.js` - Main application component
-- `src/pages/HomePage.jsx` - Main page with all components
-- `src/components/` - Reusable UI components
-- `src/services/api.js` - Native Fetch API wrapper
-- `src/services/taskService.js` - Task API methods
-- `src/context/TaskContext.jsx` - Global state management
+### Frontend (Next.js)
 
-### Backend
-- `src/server.js` - Server entry point
-- `src/app.js` - Express app configuration
-- `src/routes/taskRoutes.js` - Task API routes
-- `src/controllers/taskController.js` - Request handlers
-- `src/services/taskService.js` - Business logic
-- `src/config/database.js` - Database connection
-- `src/config/env.js` - Native environment variable loader
-- `src/middleware/cors.js` - Native CORS middleware
+#### App Router
+- `app/layout.tsx` - Root layout with metadata
+- `app/page.tsx` - Home page (Server Component)
+- `app/login/page.tsx` - Login page
+- `app/register/page.tsx` - Register page
 
-### Database
-- `schema.sql` - Database schema with tasks table
-- `docker-compose.yml` - PostgreSQL Docker setup
-- `setup.sh` / `setup.ps1` - Database setup scripts
+#### API Routes
+- `app/api/auth/*` - Authentication endpoints (proxy to NestJS)
+- `app/api/tasks/*` - Task endpoints (proxy to NestJS)
+
+#### Server Actions
+- `app/actions/auth.ts` - Authentication mutations
+- `app/actions/tasks.ts` - Task mutations
+
+#### Components
+- `components/ui/` - Reusable UI components (Button, Input)
+- `components/features/` - Feature components (TaskForm, TaskList, etc.)
+- `components/layout/` - Layout components (Navbar)
+
+#### Services
+- `lib/api/client.ts` - Client-side API client (uses Next.js API routes)
+- `lib/api/server.ts` - Server-side API client (for Server Components)
+- `lib/api/authService.ts` - Auth service methods
+- `lib/api/taskService.ts` - Task service methods
+
+### Backend (NestJS)
+
+#### Core
+- `src/main.ts` - Application bootstrap
+- `src/app.module.ts` - Root module with all imports
+
+#### Modules
+- `src/auth/` - Authentication module (JWT, Passport)
+- `src/users/` - Users module
+- `src/tasks/` - Tasks module (with caching)
+- `src/database/` - Database module (TypeORM)
+- `src/redis/` - Redis module
+- `src/token-revocation/` - Token revocation module
+
+#### Common
+- `src/common/guards/` - Authentication guards
+- `src/common/interceptors/` - Response transformation, caching
+- `src/common/filters/` - Exception handling
+- `src/common/decorators/` - Custom decorators
+
+### Shared
+- `shared/types/` - TypeScript types shared across stack
 
 ## Code Organization
 
 ### Frontend Structure
-- **Components**: Reusable UI components (Button, Input, TaskList, TaskItem, TaskForm, TaskFilter)
-- **Context**: Global state management (TaskContext)
+- **App Router**: Pages, API routes, Server Actions
+- **Components**: UI, features, layout components
+- **Context**: Global state management (Auth, Tasks)
 - **Services**: API communication layer
-- **Pages**: Page-level components
+- **Lib**: Utilities, constants, helpers
 
 ### Backend Structure
-- **Routes**: API endpoint definitions
+- **Modules**: Feature modules (Auth, Users, Tasks)
 - **Controllers**: HTTP request/response handling
 - **Services**: Business logic and database operations
-- **Config**: Configuration files (database connection)
-- **Middleware**: Custom middleware (error handling, validation)
+- **DTOs**: Data transfer objects with validation
+- **Entities**: TypeORM database entities
+- **Guards**: Route protection
+- **Interceptors**: Response transformation, caching
+- **Filters**: Exception handling
 
 ## Environment Files
 
-### Backend (.env)
-```
-NODE_ENV=development
-PORT=5000
+### Backend (`backend/.env`)
+```env
+# Database
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=taskmanager_dev
 DB_USER=postgres
 DB_PASSWORD=postgres
-DB_SSL=false
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# JWT
+JWT_SECRET=your_secret_key
+JWT_ACCESS_EXPIRATION=1h
+JWT_REFRESH_EXPIRATION=7d
+
+# Server
+PORT=5000
+NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000
-LOG_LEVEL=debug
 ```
 
-### Frontend (.env)
+### Frontend (`frontend/.env.local`)
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_ENV=development
-```
 
-## API Endpoints
+## Legacy Files
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/api/tasks` | Get all tasks |
-| GET | `/api/tasks?status=pending` | Filter tasks by status |
-| GET | `/api/tasks/:id` | Get task by ID |
-| POST | `/api/tasks` | Create new task |
-| PUT | `/api/tasks/:id` | Update task |
-| DELETE | `/api/tasks/:id` | Delete task |
+The following directories contain legacy files from the old implementation:
 
-## Technology Stack
+- `backend/src/routes/` - Old Express routes (not used)
+- `backend/src/controllers/` - Old Express controllers (not used)
+- `backend/src/services/` - Old Express services (not used)
+- `backend/src/middleware/` - Old Express middleware (not used)
+- `frontend/src/` - Old Create React App structure (not used)
 
-- **Frontend**: React, Native Fetch API, React Context API
-- **Backend**: Node.js, Express.js, PostgreSQL (pg), Native CORS middleware, Native env loader
-- **Database**: PostgreSQL (Docker for local development)
-- **Deployment**: Vercel/Netlify (frontend), Railway/Render (backend)
+See [CLEANUP_GUIDE.md](./CLEANUP_GUIDE.md) for details on removing legacy files.
 
+---
+
+**Last Updated**: 2024  
+**Version**: 3.0.0

@@ -2,32 +2,40 @@
 
 ## 1. System Overview
 
-The Task Manager application follows a **monolithic architecture** with clear separation between frontend and backend layers. The architecture emphasizes simplicity, modularity, and scalability:
+The Task Manager application follows a **modern full-stack architecture** with clear separation between frontend and backend layers. The architecture emphasizes type safety, performance, and scalability:
 
-- **Frontend**: React SPA (Single Page Application) deployed separately
-- **Backend**: Node.js/Express REST API with stateless design
+- **Frontend**: Next.js 15 with App Router, Server Components, and Server Actions
+- **Backend**: NestJS 10 with TypeORM, modular architecture
 - **Database**: PostgreSQL for data persistence
-- **Deployment**: Decoupled monolith (separate frontend/backend deployments)
+- **Cache**: Redis for token revocation and response caching
+- **Deployment**: Decoupled architecture (separate frontend/backend deployments)
 
-This approach provides simple development and deployment, easy debugging and testing, clear separation of concerns, horizontal scalability, and a future migration path to microservices if needed.
+This approach provides:
+- ✅ Type safety across the stack
+- ✅ Server-side rendering for performance
+- ✅ Multi-layer caching for speed
+- ✅ Modular, maintainable code
+- ✅ Horizontal scalability
+- ✅ Future-proof architecture
 
 ## 2. Tech Stack
 
 | Layer | Technology | Justification |
 |-------|------------|---------------|
-| **Frontend** | React | Component-based UI for reusability and maintainability |
-| **Frontend** | Native Fetch API | HTTP client for API communication (native browser API) |
-| **Frontend** | CSS | Custom CSS for component styling |
-| **Frontend** | React Context API | State management for MVP (scalable to Redux/Zustand) |
-| **Backend** | Node.js | JavaScript runtime for full-stack JavaScript development |
-| **Backend** | Express.js | Minimal web framework for REST API endpoints |
-| **Backend** | PostgreSQL | Relational database for ACID compliance and reliability |
-| **Backend** | pg (node-postgres) | PostgreSQL client with connection pooling |
-| **Backend** | Native CORS Middleware | Custom CORS implementation using native Express middleware |
-| **Database** | PostgreSQL | Structured data storage with indexing and transactions |
-| **Development** | Docker | Containerization for consistent local PostgreSQL setup |
-| **Development** | ESLint + Prettier | Code quality and formatting standards |
-| **Deployment** | Vercel/Netlify | Frontend hosting with CDN and automatic deployments |
+| **Frontend** | Next.js 15 | Full-stack React framework with SSR, routing, and optimization |
+| **Frontend** | React 19 | Latest React with Server Components support |
+| **Frontend** | TypeScript | Type safety and better developer experience |
+| **Frontend** | CSS Modules | Scoped styling for components |
+| **Frontend** | Server Actions | Progressive enhancement for mutations |
+| **Backend** | NestJS 10 | Enterprise-grade Node.js framework with DI and modules |
+| **Backend** | TypeORM | Type-safe database operations |
+| **Backend** | PostgreSQL | Relational database for ACID compliance |
+| **Backend** | Redis | Caching and token revocation |
+| **Backend** | Swagger | Auto-generated API documentation |
+| **Shared** | TypeScript Types | Shared types across frontend and backend |
+| **Development** | Docker | Containerization for PostgreSQL and Redis |
+| **Development** | ESLint + Prettier | Code quality and formatting |
+| **Deployment** | Vercel | Optimized Next.js hosting with CDN |
 | **Deployment** | Railway/Render | Backend hosting with managed infrastructure |
 
 ## 3. System Diagram

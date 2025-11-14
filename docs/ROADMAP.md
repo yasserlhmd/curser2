@@ -63,7 +63,7 @@
 ## 5. Future Ideas (Backlog)
 
 Post-MVP features to consider after v1.0 launch:
-- User authentication and multi-user support
+- **User authentication and multi-user support** - 📋 [Feature Plan Available](FEATURE_PLAN_AUTH.md)
 - Task categories, tags, and search
 - Due dates and reminders
 - Dark mode theme
@@ -74,6 +74,6 @@ Post-MVP features to consider after v1.0 launch:
 
 ---
 
-**Document Version**: 2.0  
-**Last Updated**: 2025-11-12
+**Document Version**: 2.1  
+**Last Updated**: 2025-01-XX
 
